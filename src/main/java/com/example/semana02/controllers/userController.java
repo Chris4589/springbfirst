@@ -1,5 +1,7 @@
 package com.example.semana02.controllers;
 
+import java.util.Optional;
+
 import javax.annotation.security.RolesAllowed;
 
 import com.example.semana02.dto.ResponseMessage;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +46,16 @@ public class userController {
     public ResponseEntity<?> deleteById(@PathVariable("id") Long id){
         __usService.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody UserClass user){
+        
+        Optional<UserClass> users = __usService.findById(id);
+
+        users.get().setName(user.getName());
+        users.get().setLastname(user.getLastname());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(__usService.save(users.get()));
     }
 
     @Autowired
