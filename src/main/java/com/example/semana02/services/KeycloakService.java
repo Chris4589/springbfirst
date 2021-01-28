@@ -23,7 +23,7 @@ public class KeycloakService {
     @Value("${keycloak.auth-server-url}") //viene de aplications.properties
     private String server_url;
 
-    @Value("${keycloak.realm}")
+    @Value("${keycloak.realm}")//viene de aplications.properties
     private String realm;
 
     public Object[] createUser(User user){
@@ -51,7 +51,7 @@ public class KeycloakService {
                  usersResource.get(userId).resetPassword(passwordCredential);
 
                  RealmResource realmResource = getRealmResource();
-                 RoleRepresentation roleRepresentation = realmResource.roles().get("real-user").toRepresentation();
+                 RoleRepresentation roleRepresentation = realmResource.roles().get("realm-user").toRepresentation();
                  realmResource.users().get(userId).roles().realmLevel().add(Arrays.asList(roleRepresentation));
                  message.setMessage("usuario creado con éxito");
              }else if(statusId == 409){

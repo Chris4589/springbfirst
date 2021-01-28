@@ -25,6 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user")
 public class userController {
+
+    @Autowired
+    private KeycloakService keycloakService;
+
     @Autowired
     private UserService __usService;
 
@@ -37,12 +41,12 @@ public class userController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(__usService.findAll());
     }
     @GetMapping("/{id}")
-    @RolesAllowed("user-backend")
+    @RolesAllowed("backend-user")
     public ResponseEntity<?> readById(@PathVariable("id") Long id){
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(__usService.findById(id));
     }
     @DeleteMapping("/{id}")
-    @RolesAllowed("admin-backend")
+    //@RolesAllowed("backend-user")
     public ResponseEntity<?> deleteById(@PathVariable("id") Long id){
         __usService.deleteById(id);
         return ResponseEntity.ok().build();
@@ -58,10 +62,10 @@ public class userController {
         return ResponseEntity.status(HttpStatus.CREATED).body(__usService.save(users.get()));
     }
 
-    @Autowired
-    private KeycloakService keycloakService;
+    
 
     @PostMapping("/create")
+    @RolesAllowed("backend-admin")
     public ResponseEntity<ResponseMessage> create(@RequestBody User user){
         Object[] obj = keycloakService.createUser(user);
         int status = (int) obj[0]; 

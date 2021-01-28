@@ -4,8 +4,11 @@ import java.io.Serializable;
 //ejecutar keycloack para que jale 
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -1L;
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 5701619718664391264L;
     private String username;
     private String email;
     private String firstName;
